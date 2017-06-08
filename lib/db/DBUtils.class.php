@@ -362,6 +362,67 @@ class DBUtils
 	    return $oObject;
 	}
 
+	/**
+	 * init lastUpdate for given function
+	 *
+	 * @param string $functionName
+	 * @return array [$lastUpdate, $currentTime, $currentPage]
+	 */
+	public static function lastUpdateStart($functionName)
+	{
+		if( !(self::$DBQuery instanceof DBQuery) )
+		{
+			self::$DBQuery = DBQuery::getInstance();
+		}
+
+		// get lastupdate data
+		$data = self::$DBQuery->select("SELECT LastUpdate, CurrentPage FROM `MetaLastUpdate` WHERE `Function` = '$functionName'")->fetchAssoc();
+
+		if( !isset($data) )
+		{
+			// init entry
+			self::$DBQuery->replace("REPLACE INTO `MetaLastUpdate`".self::buildInsert(array('Function' => $functionName)));
+		}
+
+		// store current timestamp
+		$currentTime = time();
+		self::$DBQuery->update("UPDATE `MetaLastUpdate`".self::buildUpdate(array('CurrentLastUpdate' => $currentTime))." WHERE `Function` = '$functionName'");
+
+		return array(intval($data['LastUpdate']), $currentTime, intval($data['CurrentPage']));
+	}
+
+	/**
+	 * update lastUpdate's current page for given function
+	 *
+	 * @param string $functionName
+	 * @param int $currentPage
+	 */
+	public static function lastUpdatePageUpdate($functionName, $currentPage)
+	{
+		if( !(self::$DBQuery instanceof DBQuery) )
+		{
+			self::$DBQuery = DBQuery::getInstance();
+		}
+
+		self::$DBQuery->update("UPDATE `MetaLastUpdate`".DBUtils::buildUpdate(array('CurrentPage' => $currentPage))." WHERE `Function`='$functionName'");
+	}
+
+	/**
+	 * finish lastUpdate for given function
+	 *
+	 * @param string $functionName
+	 */
+	public static function lastUpdateFinish($functionName)
+	{
+		if( !(self::$DBQuery instanceof DBQuery) )
+		{
+			self::$DBQuery = DBQuery::getInstance();
+		}
+
+		$currentTime = time();
+		self::$DBQuery->update("UPDATE `MetaLastUpdate` ".DBUtils::buildUpdate(array('LastUpdate' => $currentTime, 'CurrentLastUpdate' => $currentTime, 'CurrentPage' => 0))." WHERE `Function`='$functionName'");
+	}
+
 }
 
 ?>
