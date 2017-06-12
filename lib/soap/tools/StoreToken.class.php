@@ -148,7 +148,7 @@ class StoreToken
 			}				
 		}
 		
-		return array();
+		return array(null, null);
 	}
 	
 	/**
