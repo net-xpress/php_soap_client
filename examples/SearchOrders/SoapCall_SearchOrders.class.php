@@ -3,6 +3,9 @@
 require_once ROOT.'lib/soap/call/PlentySoapCall.abstract.php';
 require_once 'Request_SearchOrders.class.php';
 
+/*
+ * there's a plenty bug when an order contains some non-utf-8 characters, soap will refuse to respond for the whole package of 25 orders
+ * in order to work unattended we will workaroud this bug. code regarding this workaround is marked with /* workaround */
 
 class SoapCall_SearchOrders extends PlentySoapCall 
 {
@@ -14,6 +17,8 @@ class SoapCall_SearchOrders extends PlentySoapCall
 	
 	private $startAtPage     = 0;
 	private $lastSavedPage   = 0;
+	private $lastOrderID     = -1;
+	private $caughtUTF8Error = false;
 
 	private $aOrderHeads = [];
 	private $aOrderItems = [];
@@ -165,6 +170,16 @@ class SoapCall_SearchOrders extends PlentySoapCall
 	 */
 	private function processOrderHead($head)
 	{
+		/* workaround */
+		if( $this->caughtUTF8Error )
+		{
+			$this->debug( __FUNCTION__." Stored failed OrderID-Range from ".($this->lastOrderID + 1)." for ".(intval( $head->OrderID ) - ($this->lastOrderID + 1))." orders, next working OrderID: {$head->OrderID}" );
+
+			// ... and carry on in normal mode
+			$this->caughtUTF8Error = false;
+		}
+
+		$this->lastOrderID = intval( $head->OrderID );
 		$this->aOrderHeads[$head->OrderID] = [
 			'Currency'                => $head->Currency,
 			'CustomerID'              => $head->CustomerID,
@@ -257,6 +272,32 @@ class SoapCall_SearchOrders extends PlentySoapCall
 			$this->aOrderHeads = [];
 			$this->aOrderItems = [];
 		}
+	}
+
+	public function onExceptionAction(Exception $e)
+	{
+		/* workaround */
+		if( is_soap_fault( $e ) && $e->faultcode === 'SOAP-ENV:Server' )
+		{
+			// assume it's an utf-8 error
+			$this->proceedAfterUTF8Error();
+		}
+		else
+		{
+			$this->storeToDB();
+			parent::onExceptionAction( $e );
+		}
+	}
+
+	private function proceedAfterUTF8Error()
+	{
+		$this->getLogger()->debug( __FUNCTION__.' Caught UTF-8 Error on page : '.$this->page.', last known working OrderID: '.$this->lastOrderID.', skipping to next page' );
+
+		// remember we caught an UTF8-Error ...
+		$this->caughtUTF8Error = true;
+
+		// ... then skip to the next page
+		$this->page++;
 	}
 }
 
