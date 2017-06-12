@@ -15,6 +15,9 @@ class SoapCall_SearchOrders extends PlentySoapCall
 	private $startAtPage     = 0;
 	private $lastSavedPage   = 0;
 
+	private $aOrderHeads = [];
+	private $aOrderItems = [];
+
 	public function __construct()
 	{
 		parent::__construct(__CLASS__);
@@ -162,6 +165,47 @@ class SoapCall_SearchOrders extends PlentySoapCall
 	 */
 	private function processOrderHead($head)
 	{
+		$this->aOrderHeads[$head->OrderID] = [
+			'Currency'                => $head->Currency,
+			'CustomerID'              => $head->CustomerID,
+			'DeliveryAddressID'       => $head->DeliveryAddressID,
+			'DoneTimestamp'           => $head->DoneTimestamp,
+			'DunningLevel'            => $head->DunningLevel,
+			'EbaySellerAccount'       => $head->EbaySellerAccount,
+			'EstimatedTimeOfShipment' => $head->EstimatedTimeOfShipment,
+			'ExchangeRatio'           => $head->ExchangeRatio,
+			'ExternalOrderID'         => $head->ExternalOrderID,
+			'Invoice'                 => $head->Invoice,
+			'IsNetto'                 => $head->IsNetto,
+			'LastUpdate'              => $head->LastUpdate,
+			'Marking1ID'              => $head->Marking1ID,
+			'MethodOfPaymentID'       => $head->MethodOfPaymentID,
+			'StoreID'                 => $head->StoreID,
+			/*	'OrderDocumentNumbers'		=>	$head->OrderDocumentNumbers, ignored since not part of the request */
+			'OrderID'                 => $head->OrderID,
+			/*	'OrderInfos'				=>	$head->OrderInfos, ignored since not part of the request */
+			'OrderStatus'             => $head->OrderStatus,
+			'OrderTimestamp'          => $head->OrderTimestamp,
+			'OrderType'               => $head->OrderType,
+			'PackageNumber'           => $head->PackageNumber,
+			'PaidTimestamp'           => $head->PaidTimestamp,
+			'ParentOrderID'           => $head->ParentOrderID,
+			'PaymentStatus'           => $head->PaymentStatus,
+			'ReferrerID'              => $head->ReferrerID,
+			'RemoteIP'                => $head->RemoteIP,
+			'ResponsibleID'           => $head->ResponsibleID,
+			'SalesAgentID'            => $head->SalesAgentID,
+			'SellerAccount'           => $head->SellerAccount,
+			'ShippingCosts'           => $head->ShippingCosts,
+			'ShippingID'              => $head->ShippingID,
+			'ShippingMethodID'        => $head->ShippingMethodID,
+			'ShippingProfileID'       => $head->ShippingProfileID,
+			'TotalBrutto'             => $head->TotalBrutto,
+			'TotalInvoice'            => $head->TotalInvoice,
+			'TotalNetto'              => $head->TotalNetto,
+			'TotalVAT'                => $head->TotalVAT,
+			'WarehouseID'             => $head->WarehouseID,
+		];
 	}
 
 	/**
@@ -169,10 +213,50 @@ class SoapCall_SearchOrders extends PlentySoapCall
 	 */
 	private function processOrderItem($item)
 	{
+		$this->aOrderItems[] = [
+			'BundleItemID'        => $item->BundleItemID,
+			'Currency'            => $item->Currency,
+			'ExternalItemID'      => $item->ExternalItemID,
+			'ExternalOrderItemID' => $item->ExternalOrderItemID,
+			'ItemID'              => $item->ItemID,
+			'ItemNo'              => $item->ItemNo,
+			'ItemRebate'          => $item->ItemRebate,
+			'ItemText'            => $item->ItemText,
+			'NeckermannItemNo'    => $item->NeckermannItemNo,
+			'OrderID'             => $item->OrderID,
+			'OrderRowID'          => $item->OrderRowID,
+			'Price'               => $item->Price,
+			'Quantity'            => $item->Quantity,
+			'ReferrerID'          => $item->ReferrerID,
+			'SKU'                 => $item->SKU,
+			/*	'SalesOrderProperties'	=>	$item->SalesOrderProperties, ignored since not part of the request */
+			'VAT'                 => $item->VAT,
+			'WarehouseID'         => $item->WarehouseID,
+		];
 	}
 
 	private function storeToDB()
 	{
+		// store orders to db
+		$countOrderHeads = count( $this->aOrderHeads );
+		$countOrderItems = count( $this->aOrderItems );
+
+		if( $countOrderHeads > 0 )
+		{
+			$dbQuery = DBQuery::getInstance();
+
+			$this->debug( __FUNCTION__." : storing $countOrderHeads order head and $countOrderItems order item records. Progress: {$this->page} / {$this->pages}" );
+
+			$dbQuery->insert( "INSERT INTO `OrderHead`".DBUtils::buildMultipleInsertOnDuplicateKeyUpdate( $this->aOrderHeads ) );
+
+			// delete old OrderItems to prevent duplicate insertion
+			$dbQuery->delete( "DELETE FROM `OrderItem` WHERE `OrderID` IN ('".implode( "','", array_keys( $this->aOrderHeads ) )."')" );
+
+			$dbQuery->insert( "INSERT INTO `OrderItem`".DBUtils::buildMultipleInsertOnDuplicateKeyUpdate( $this->aOrderItems ) );
+
+			$this->aOrderHeads = [];
+			$this->aOrderItems = [];
+		}
 	}
 }
 
