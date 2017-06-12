@@ -9,7 +9,7 @@ require_once 'Request_SearchOrders.class.php';
 
 class SoapCall_SearchOrders extends PlentySoapCall
 {
-	private static $SAVE_AFTER_PAGES = 1;
+	private static $SAVE_AFTER_PAGES = 25;
 
 	private $page                            = 0;
 	private $pages                           = -1;
