@@ -6,11 +6,15 @@ require_once 'Request_SearchOrders.class.php';
 
 class SoapCall_SearchOrders extends PlentySoapCall 
 {
+	private static $SAVE_AFTER_PAGES = 1;
 	
 	private $page								=	0;
 	private $pages								=	-1;
 	private $oPlentySoapRequest_SearchOrders	=	null;
 	
+	private $startAtPage     = 0;
+	private $lastSavedPage   = 0;
+
 	public function __construct()
 	{
 		parent::__construct(__CLASS__);
@@ -20,14 +24,19 @@ class SoapCall_SearchOrders extends PlentySoapCall
 	{
 		$this->getLogger()->debug(__FUNCTION__);
 		
+		list( $lastUpdate, $currentTime, $this->startAtPage ) = DBUtils::lastUpdateStart( __CLASS__ );
+
 		if( $this->pages == -1 )
 		{
 			try
 			{
-				$oRequest_SearchOrders					=	new Request_SearchOrders();
+				$this->oPlentySoapRequest_SearchOrders	=	Request_SearchOrders::getRequest( $lastUpdate, $currentTime, $this->startAtPage );
 				
-				$this->oPlentySoapRequest_SearchOrders	=	$oRequest_SearchOrders->getRequest();
 				
+				if( $this->startAtPage > 0 )
+				{
+					$this->getLogger()->debug( __FUNCTION__." Starting at page {$this->startAtPage}" );
+				}
 				/*
 				 * do soap call
 				 */
@@ -46,7 +55,7 @@ class SoapCall_SearchOrders extends PlentySoapCall
 					
 					if( $pagesFound > $this->page )
 					{
-						$this->page 	= 	1;
+						$this->page 	= 	$this->startAtPage + 1;
 						$this->pages 	=	$pagesFound;
 						
 						$this->executePages();
@@ -67,6 +76,9 @@ class SoapCall_SearchOrders extends PlentySoapCall
 		{
 			$this->executePages();
 		}
+
+		$this->storeToDB();
+		DBUtils::lastUpdateFinish( $currentTime );
 	}
 	
 	
@@ -96,82 +108,73 @@ class SoapCall_SearchOrders extends PlentySoapCall
 			{
 				$this->onExceptionAction($e);
 			}
+			if( $this->page - $this->lastSavedPage > self::$SAVE_AFTER_PAGES )
+			{
+				$this->storeToDB();
+				$this->lastSavedPage = $this->page;
+				DBUtils::lastUpdatePageUpdate( __CLASS__, $this->page );
+			}
 		}
 	}
-	
-	
-	
-	private function responseInterpretation(PlentySoapResponse_SearchOrders $oPlentySoapResponse_SearchOrders )
-	{
-		if( is_array( $oPlentySoapResponse_SearchOrders->Orders->item ) )
-		{
-			foreach( $oPlentySoapResponse_SearchOrders->Orders->item AS $order)
-			{
-				$this->getLogger()->debug(__FUNCTION__.' : ' 
-								. 	' OrderID : '			.$order->OrderHead->OrderID				.','
-								.	' ExternalOrderID : '	.$order->OrderHead->ExternalOrderID		.','
-								.	' CustomerID : '		.$order->OrderHead->CustomerID			.','
-								.	' TotalInvoice : '		.$order->OrderHead->TotalInvoice	
-									);
-				if( isset($order->OrderItems->item) && is_array( $order->OrderItems->item ) )
-				{
-					foreach( $order->OrderItems->item AS $oitems)
-					{
-						$this->getLogger()->debug(__FUNCTION__.' : '
-								. 	' OrderID : '			.$order->OrderHead->OrderID	.','
-								.	' Item SKU : '			.$oitems->SKU				.','
-								.	' Quantity : '			.$oitems->Quantity			.','
-								.	' Price : '				.$oitems->Price
-							);
-					}
-				}
-				else
-				{
-					if( isset($order->OrderItems->item) )
-					{
-						$this->getLogger()->debug(__FUNCTION__.' : '
-								. 	' OrderID : '			.$order->OrderHead->OrderID			.','
-								.	' Item SKU : '			.$order->OrderItems->item->SKU		.','
-								.	' Quantity : '			.$order->OrderItems->item->Quantity	.','
-								.	' Price : '				.$order->OrderItems->item->Price
-						);
-					}
-				}
 
+	/**
+	 * @param PlentySoapResponse_SearchOrders $response
+	 */
+	private function responseInterpretation(PlentySoapResponse_SearchOrders $response)	{
+		if( is_array( $response->Orders->item ) )
+		{
+			foreach( $response->Orders->item AS $order )
+			{
+				$this->processOrder( $order );
 			}
 		}
 		else
 		{
-			$this->getLogger()->debug(__FUNCTION__.' : ' 
-								. 	' OrderID : '			.$oPlentySoapResponse_SearchOrders->Orders->item->OrderID				.','
-								.	' ExternalOrderID : '	.$oPlentySoapResponse_SearchOrders->Orders->item->ExternalOrderID		.','
-								.	' CustomerID : '		.$oPlentySoapResponse_SearchOrders->Orders->item->CustomerID			.','
-								.	' TotalInvoice : '		.$oPlentySoapResponse_SearchOrders->Orders->item->TotalInvoice	
-									);
-			if( is_array( $oPlentySoapResponse_SearchOrders->Orders->item->OrderItems->item ) )
+			$this->processOrder( $response->Orders->item );
+		}
+	}
+
+	/**
+	 * @param PlentySoapObject_SearchOrders $orders
+	 */
+	private function processOrder($orders)
+	{
+		$this->processOrderHead( $orders->OrderHead );
+
+		if( isset( $orders->OrderItems->item ) && is_array( $orders->OrderItems->item ) )
+		{
+			foreach( $orders->OrderItems->item AS $oitem )
 			{
-				foreach( $oPlentySoapResponse_SearchOrders->Orders->item->item AS $oitems)
-				{
-					$this->getLogger()->debug(__FUNCTION__.' : '
-							. 	' OrderID : '			.$oPlentySoapResponse_SearchOrders->Orders->item->OrderID	.','
-							.	' Item SKU : '			.$oitems->SKU				.','
-							.	' Quantity : '			.$order->Quantity			.','
-							.	' Price : '				.$order->Price
-					);
-				}
-			}
-			else
-			{
-				$this->getLogger()->debug(__FUNCTION__.' : '
-						. 	' OrderID : '			.$oPlentySoapResponse_SearchOrders->Orders->item->OrderHead->OrderID			.','
-						.	' Item SKU : '			.$oPlentySoapResponse_SearchOrders->Orders->item->OrderItems->item->SKU		.','
-						.	' Quantity : '			.$oPlentySoapResponse_SearchOrders->Orders->item->OrderItems->item->Quantity	.','
-						.	' Price : '				.$oPlentySoapResponse_SearchOrders->Orders->item->OrderItems->item->Price
-				);
+				$this->processOrderItem( $oitem );
 			}
 		}
-		$this->getLogger()->debug(__FUNCTION__.' : done' );
+		else
+		{
+			if( isset( $orders->OrderItems->item ) )
+			{
+				$this->processOrderItem( $orders->OrderItems->item );
+			}
+		}
+	}
+
+	/**
+	 * @param PlentySoapObject_OrderHead $head
+	 */
+	private function processOrderHead($head)
+	{
+	}
+
+	/**
+	 * @param PlentySoapObject_OrderItem $item
+	 */
+	private function processOrderItem($item)
+	{
+	}
+
+	private function storeToDB()
+	{
 	}
 }
 
 ?>
+
