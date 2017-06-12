@@ -7,14 +7,14 @@ require_once 'Request_SearchOrders.class.php';
  * there's a plenty bug when an order contains some non-utf-8 characters, soap will refuse to respond for the whole package of 25 orders
  * in order to work unattended we will workaroud this bug. code regarding this workaround is marked with /* workaround */
 
-class SoapCall_SearchOrders extends PlentySoapCall 
+class SoapCall_SearchOrders extends PlentySoapCall
 {
 	private static $SAVE_AFTER_PAGES = 1;
-	
-	private $page								=	0;
-	private $pages								=	-1;
-	private $oPlentySoapRequest_SearchOrders	=	null;
-	
+
+	private $page                            = 0;
+	private $pages                           = -1;
+	private $oPlentySoapRequest_SearchOrders = null;
+
 	private $startAtPage     = 0;
 	private $lastSavedPage   = 0;
 	private $lastOrderID     = -1;
@@ -25,22 +25,21 @@ class SoapCall_SearchOrders extends PlentySoapCall
 
 	public function __construct()
 	{
-		parent::__construct(__CLASS__);
+		parent::__construct( __CLASS__ );
 	}
-	
+
 	public function execute()
 	{
-		$this->getLogger()->debug(__FUNCTION__);
-		
+		$this->getLogger()->debug( __FUNCTION__.' Fetching order data from plenty' );
+
 		list( $lastUpdate, $currentTime, $this->startAtPage ) = DBUtils::lastUpdateStart( __CLASS__ );
 
 		if( $this->pages == -1 )
 		{
 			try
 			{
-				$this->oPlentySoapRequest_SearchOrders	=	Request_SearchOrders::getRequest( $lastUpdate, $currentTime, $this->startAtPage );
-				
-				
+				$this->oPlentySoapRequest_SearchOrders = Request_SearchOrders::getRequest( $lastUpdate, $currentTime, $this->startAtPage );
+
 				if( $this->startAtPage > 0 )
 				{
 					$this->getLogger()->debug( __FUNCTION__." Starting at page {$this->startAtPage}" );
@@ -48,36 +47,44 @@ class SoapCall_SearchOrders extends PlentySoapCall
 				/*
 				 * do soap call
 				 */
-				$response		=	$this->getPlentySoap()->SearchOrders( $this->oPlentySoapRequest_SearchOrders );
-				
-				
-				if( $response->Success == true )
+				$response = $this->getPlentySoap()->SearchOrders( $this->oPlentySoapRequest_SearchOrders );
+
+				if( ($response->Success == true) && isset( $response->Orders->item ) )
 				{
-					$ordersFound	=	count($response->Orders->item);
-					$pagesFound		=	$response->Pages;
-					
-					$this->getLogger()->debug(__FUNCTION__.' Request Success - orders found : '.$ordersFound .' / pages : '.$pagesFound );
-					
+					/** @noinspection PhpParamsInspection */
+					$ordersFound = is_array( $response->Orders->item ) ? count( $response->Orders->item ) : 1;
+					$pagesFound  = $response->Pages;
+
+					$this->getLogger()->debug( __FUNCTION__." Request Success - orders found : $ordersFound / pages : $pagesFound " );
+
 					// auswerten
 					$this->responseInterpretation( $response );
-					
+
 					if( $pagesFound > $this->page )
 					{
-						$this->page 	= 	$this->startAtPage + 1;
-						$this->pages 	=	$pagesFound;
-						
+						$this->page  = $this->startAtPage + 1;
+						$this->pages = $pagesFound;
+
 						$this->executePages();
 					}
-										
+
 				}
 				else
 				{
-					$this->getLogger()->debug(__FUNCTION__.' Request Error');
+					if( ($response->Success == true) && !isset( $response->Orders->item ) )
+					{
+						$this->debug( __FUNCTION__.' Request Success - but no matching orders found' );
+					}
+					else
+					{
+						$this->debug( __FUNCTION__.' Request Error' );
+						//TODO implement serialize_errors
+						//$this->debug( serialize_errors( $response->ResponseMessages->item ) );
+					}
 				}
-			}
-			catch(Exception $e)
+			} catch( Exception $e )
 			{
-				$this->onExceptionAction($e);
+				$this->onExceptionAction( $e );
 			}
 		}
 		else
@@ -88,9 +95,8 @@ class SoapCall_SearchOrders extends PlentySoapCall
 		$this->storeToDB();
 		DBUtils::lastUpdateFinish( $currentTime );
 	}
-	
-	
-	
+
+
 	public function executePages()
 	{
 		while( $this->pages > $this->page )
@@ -98,24 +104,25 @@ class SoapCall_SearchOrders extends PlentySoapCall
 			$this->oPlentySoapRequest_SearchOrders->Page = $this->page;
 			try
 			{
-				$response		=	$this->getPlentySoap()->SearchOrders( $this->oPlentySoapRequest_SearchOrders );
-				
+				$response = $this->getPlentySoap()->SearchOrders( $this->oPlentySoapRequest_SearchOrders );
+
 				if( $response->Success == true )
 				{
-					$ordersFound	=	count($response->Orders->item);
-					$this->getLogger()->debug(__FUNCTION__.' Request Success - orders found : '.$ordersFound .' / page : '.$this->page );
-					
+					/** @noinspection PhpParamsInspection */
+					$ordersFound = is_array( $response->Orders->item ) ? count( $response->Orders->item ) : 1;
+					$this->getLogger()->debug( __FUNCTION__." Request Success - articles found : $ordersFound / page : {$this->page}" );
+
 					// auswerten
 					$this->responseInterpretation( $response );
 				}
-				
+
 				$this->page++;
-				
-			}	
-			catch(Exception $e)
+
+			} catch( Exception $e )
 			{
-				$this->onExceptionAction($e);
+				$this->onExceptionAction( $e );
 			}
+
 			if( $this->page - $this->lastSavedPage > self::$SAVE_AFTER_PAGES )
 			{
 				$this->storeToDB();
@@ -128,7 +135,8 @@ class SoapCall_SearchOrders extends PlentySoapCall
 	/**
 	 * @param PlentySoapResponse_SearchOrders $response
 	 */
-	private function responseInterpretation(PlentySoapResponse_SearchOrders $response)	{
+	private function responseInterpretation(PlentySoapResponse_SearchOrders $response)
+	{
 		if( is_array( $response->Orders->item ) )
 		{
 			foreach( $response->Orders->item AS $order )
@@ -180,6 +188,7 @@ class SoapCall_SearchOrders extends PlentySoapCall
 		}
 
 		$this->lastOrderID = intval( $head->OrderID );
+
 		$this->aOrderHeads[$head->OrderID] = [
 			'Currency'                => $head->Currency,
 			'CustomerID'              => $head->CustomerID,
