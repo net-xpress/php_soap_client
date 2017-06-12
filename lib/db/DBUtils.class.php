@@ -142,6 +142,23 @@ class DBUtils
 		return ' ('.substr($f,0,-1).') '.$strRet;
 	}
 	
+	public static function buildMultipleInsertOnDuplicateKeyUpdate(array $array)
+	{
+		$keys = [];
+		foreach( $array as &$subArray )
+		{
+			$keys = array_unique( array_merge( $keys, array_keys( $subArray ) ) );
+		}
+
+		$onDuplicateKeyUpdate = "ON DUPLICATE KEY UPDATE\n";
+		foreach( $keys as $key )
+		{
+			$onDuplicateKeyUpdate .= "$key=VALUES($key),\n";
+		}
+
+		return substr( self::buildMultipleInsert( $array ).$onDuplicateKeyUpdate, 0, -2 ).' ';
+	}
+
 	/**
 	 * buildUpdate - returns sql string for sql update statement  SET `key_1`='val_1',..,`key_n`='val_n'
 	 * 
