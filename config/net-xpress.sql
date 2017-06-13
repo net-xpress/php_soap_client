@@ -97,3 +97,227 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`OrderItem` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsBase` (
+  `ItemID`              INT(11) NOT NULL,
+  `ItemNo`              VARCHAR(45) DEFAULT NULL,
+  `ExternalItemID`      VARCHAR(45) DEFAULT NULL,
+  `EAN1`                BIGINT(13)  DEFAULT NULL,
+  `EAN2`                BIGINT(13)  DEFAULT NULL,
+  `EAN3`                BIGINT(13)  DEFAULT NULL,
+  `EAN4`                BIGINT(13)  DEFAULT NULL,
+  `ISBN`                VARCHAR(45) DEFAULT NULL,
+  `Type`                INT(11)     DEFAULT NULL,
+  `Model`               VARCHAR(45) DEFAULT NULL,
+  `ProducerID`          INT(11)     DEFAULT NULL,
+  `ProducerName`        VARCHAR(45) DEFAULT NULL,
+  `VATInternalID`       INT(11)     DEFAULT NULL,
+  `Marking1ID`          INT(11)     DEFAULT NULL,
+  `Marking2ID`          INT(11)     DEFAULT NULL,
+  `CustomsTariffNumber` VARCHAR(45) DEFAULT NULL,
+  `FSK`                 INT(11)     DEFAULT NULL,
+  `Condition`           INT(11)     DEFAULT NULL,
+  `Position`            VARCHAR(45) DEFAULT NULL,
+  `StorageLocation`     INT(11)     DEFAULT NULL,
+  `WebShopSpecial`      VARCHAR(45) DEFAULT NULL,
+  `Published`           INT(11)     DEFAULT NULL,
+  `LastUpdate`          INT(11)     DEFAULT NULL,
+  `ItemURL`             VARCHAR(45) DEFAULT NULL,
+  `ProducingCountryID`  INT(11)     DEFAULT NULL,
+  `BundleType`          VARCHAR(45) DEFAULT NULL,
+  `HasAttributes`       TINYINT(1)  DEFAULT NULL,
+  `DeepLink`            VARCHAR(45) DEFAULT NULL,
+  `Inserted`            INT(11)     DEFAULT NULL,
+  PRIMARY KEY (`ItemID`),
+  UNIQUE KEY `unique_key` (`ItemNo`, `EAN1`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemCategories` (
+  `ItemID`                 INT(11) NOT NULL,
+  `ItemCategoryID`         INT(11) DEFAULT NULL,
+  `ItemCategoryLevel`      INT(11) DEFAULT NULL,
+  `ItemCategoryPath`       TEXT    DEFAULT NULL,
+  `ItemCategoryPathNames`  TEXT    DEFAULT NULL,
+  `RemoveCategoryFromItem` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`ItemID`, `ItemCategoryID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`AttributeValueSets` (
+  `ItemID`                INT(11)     NOT NULL,
+  `AttributeValueSetID`   INT(11)     NOT NULL,
+  `AttributeValueSetName` VARCHAR(45) NOT NULL,
+  `EAN`                   BIGINT(13)    DEFAULT NULL,
+  `EAN2`                  BIGINT(13)    DEFAULT NULL,
+  `EAN3`                  BIGINT(13)    DEFAULT NULL,
+  `EAN4`                  BIGINT(13)    DEFAULT NULL,
+  `ASIN`                  VARCHAR(45)   DEFAULT NULL,
+  `ColliNo`               VARCHAR(45)   DEFAULT NULL,
+  `PriceID`               INT(11)       DEFAULT NULL,
+  `Availability`          INT(11)       DEFAULT NULL,
+  `PurchasePrice`         DECIMAL(8, 2) DEFAULT NULL,
+  `UVP`                   DECIMAL(8, 2) DEFAULT NULL,
+  `Oversale`              TINYINT(1)    DEFAULT NULL,
+  PRIMARY KEY (`ItemID`, `AttributeValueSetID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemTexts` (
+  `ItemID`                  INT(11) NOT NULL,
+  `Lang`                    VARCHAR(45) DEFAULT 'de',
+  `Name`                    TEXT        DEFAULT NULL,
+  `Name2`                   TEXT        DEFAULT NULL,
+  `Name3`                   TEXT        DEFAULT NULL,
+  `ShortDescription`        TEXT        DEFAULT NULL,
+  `LongDescription`         TEXT        DEFAULT NULL,
+  `TechnicalData`           TEXT        DEFAULT NULL,
+  `MetaDescription`         TEXT        DEFAULT NULL,
+  `ItemDescriptionKeywords` TEXT        DEFAULT NULL,
+  `UrlContent`              VARCHAR(45) DEFAULT NULL,
+  PRIMARY KEY (`ItemID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemFreeTextFields` (
+  `ItemID` INT(11) NOT NULL,
+  `Free1`  TEXT DEFAULT NULL,
+  `Free2`  TEXT DEFAULT NULL,
+  `Free3`  TEXT DEFAULT NULL,
+  `Free4`  TEXT DEFAULT NULL,
+  `Free5`  TEXT DEFAULT NULL,
+  `Free6`  TEXT DEFAULT NULL,
+  `Free7`  TEXT DEFAULT NULL,
+  `Free8`  TEXT DEFAULT NULL,
+  `Free9`  TEXT DEFAULT NULL,
+  `Free10` TEXT DEFAULT NULL,
+  `Free11` TEXT DEFAULT NULL,
+  `Free12` TEXT DEFAULT NULL,
+  `Free13` TEXT DEFAULT NULL,
+  `Free14` TEXT DEFAULT NULL,
+  `Free15` TEXT DEFAULT NULL,
+  `Free16` TEXT DEFAULT NULL,
+  `Free17` TEXT DEFAULT NULL,
+  `Free18` TEXT DEFAULT NULL,
+  `Free19` TEXT DEFAULT NULL,
+  `Free20` TEXT DEFAULT NULL,
+  PRIMARY KEY (`ItemID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemAvailability` (
+  `ItemID`                                INT(11) NOT NULL,
+  `Allyouneeed`                           INT(11)     DEFAULT NULL,
+  `AmazonFBA`                             INT(11)     DEFAULT NULL,
+  `AmazonFEDAS`                           VARCHAR(45) DEFAULT NULL,
+  `AmazonMultichannel`                    TINYINT(1)  DEFAULT NULL,
+  `AmazonMultichannelCom`                 TINYINT(1)  DEFAULT NULL,
+  `AmazonMultichannelDe`                  TINYINT(1)  DEFAULT NULL,
+  `AmazonMultichannelEs`                  TINYINT(1)  DEFAULT NULL,
+  `AmazonMultichannelFr`                  TINYINT(1)  DEFAULT NULL,
+  `AmazonMultichannelIt`                  TINYINT(1)  DEFAULT NULL,
+  `AmazonMultichannelUk`                  TINYINT(1)  DEFAULT NULL,
+  `AmazonProduct`                         INT(11)     DEFAULT NULL,
+  `AvailabilityID`                        INT(11)     DEFAULT NULL,
+  `AvailableUntil`                        INT(11)     DEFAULT NULL,
+  `Cdiscount`                             INT(11)     DEFAULT NULL,
+  `CouchCommerce`                         INT(11)     DEFAULT NULL,
+  `DaWanda`                               INT(11)     DEFAULT NULL,
+  `Flubit`                                INT(11)     DEFAULT NULL,
+  `Fruugo`                                INT(11)     DEFAULT NULL,
+  `GartenXXL`                             INT(11)     DEFAULT NULL,
+  `Gimahhot`                              INT(11)     DEFAULT NULL,
+  `GoogleBase`                            INT(11)     DEFAULT NULL,
+  `Grosshandel`                           INT(11)     DEFAULT NULL,
+  `Hertie`                                INT(11)     DEFAULT NULL,
+  `Hitmeister`                            INT(11)     DEFAULT NULL,
+  `Hood`                                  INT(11)     DEFAULT NULL,
+  `Inactive`                              INT(11)     DEFAULT NULL,
+  `IntervalSalesOrderQuantity`            INT(11)     DEFAULT NULL,
+  `LaRedoute`                             INT(11)     DEFAULT NULL,
+  `Laary`                                 INT(11)     DEFAULT NULL,
+  `MaximumSalesOrderQuantity`             INT(11)     DEFAULT NULL,
+  `Mercateo`                              INT(11)     DEFAULT NULL,
+  `MinimumSalesOrderQuantity`             INT(11)     DEFAULT NULL,
+  `NeckermannAtCrossDocking`              INT(11)     DEFAULT NULL,
+  `NeckermannAtCrossDockingProductType`   VARCHAR(45) DEFAULT NULL,
+  `NeckermannAtCrossDockingProvisionType` VARCHAR(45) DEFAULT NULL,
+  `NeckermannAtEnterprise`                INT(11)     DEFAULT NULL,
+  `NeckermannAtEnterpriseProductType`     VARCHAR(45) DEFAULT NULL,
+  `NeckermannAtEnterpriseProvisionType`   VARCHAR(45) DEFAULT NULL,
+  `Otto`                                  INT(11)     DEFAULT NULL,
+  `Play`                                  INT(11)     DEFAULT NULL,
+  `PlusDe`                                INT(11)     DEFAULT NULL,
+  `RakutenDe`                             INT(11)     DEFAULT NULL,
+  `RakutenDeCategory`                     INT(11)     DEFAULT NULL,
+  `RakutenUk`                             INT(11)     DEFAULT NULL,
+  `Restposten`                            INT(11)     DEFAULT NULL,
+  `Shopgate`                              INT(11)     DEFAULT NULL,
+  `SumoScout`                             INT(11)     DEFAULT NULL,
+  `Tracdelight`                           INT(11)     DEFAULT NULL,
+  `Twenga`                                INT(11)     DEFAULT NULL,
+  `WebAPI`                                INT(11)     DEFAULT NULL,
+  `Webshop`                               INT(11)     DEFAULT NULL,
+  `Yatego`                                INT(11)     DEFAULT NULL,
+  `Zalando`                               INT(11)     DEFAULT NULL,
+  `Zentralverkauf`                        INT(11)     DEFAULT NULL,
+  PRIMARY KEY (`ItemID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemOthers` (
+  `ItemID`              INT(11) NOT NULL,
+  `AuctionTitleLinkage` VARCHAR(45)   DEFAULT NULL,
+  `Coupon`              INT(11)       DEFAULT NULL,
+  `CustomerClass`       INT(11)       DEFAULT NULL,
+  `EbayAcceptValueMin`  DECIMAL(8, 2) DEFAULT NULL,
+  `EbayCategory1`       INT(11)       DEFAULT NULL,
+  `EbayCategory2`       INT(11)       DEFAULT NULL,
+  `EbayDenyValueBelow`  DECIMAL(8, 2) DEFAULT NULL,
+  `EbayPreset`          INT(11)       DEFAULT NULL,
+  `EbayShopCategory1`   VARCHAR(45)   DEFAULT NULL,
+  `EbayShopCategory2`   VARCHAR(45)   DEFAULT NULL,
+  `ItemApiCondition`    INT(11)       DEFAULT NULL,
+  `ItemCondition`       INT(11)       DEFAULT NULL,
+  `ItemEvaluation`      INT(11)       DEFAULT NULL,
+  `ItemLinkage`         INT(11)       DEFAULT NULL,
+  `PornographicContent` INT(11)       DEFAULT NULL,
+  `Position`            INT(11)       DEFAULT NULL,
+  `RevenueAccount`      INT(11)       DEFAULT NULL,
+  `SerialNumber`        INT(11)       DEFAULT NULL,
+  `ShippingPackage`     INT(11)       DEFAULT NULL,
+  `Subscription`        INT(11)       DEFAULT NULL,
+  PRIMARY KEY (`ItemID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemStock` (
+  `ItemID`                              INT(11) NOT NULL,
+  `ChangeAvailablePositiveStock`        TINYINT(1) DEFAULT NULL,
+  `ChangeAvailablePositiveStockVariant` TINYINT(1) DEFAULT NULL,
+  `ChangeNotAvailableNoStock`           TINYINT(1) DEFAULT NULL,
+  `ChangeNotAvailableNoStockVariant`    TINYINT(1) DEFAULT NULL,
+  `Limitation`                          INT(11)    DEFAULT NULL,
+  `MainWarehouseID`                     INT(11)    DEFAULT NULL,
+  `StorageLocation`                     INT(11)    DEFAULT NULL,
+  `WebshopInvisibleNoStock`             TINYINT(1) DEFAULT NULL,
+  `WebshopVisiblePositiveStock`         TINYINT(1) DEFAULT NULL,
+  PRIMARY KEY (`ItemID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;

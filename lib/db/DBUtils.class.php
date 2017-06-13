@@ -153,7 +153,7 @@ class DBUtils
 		$onDuplicateKeyUpdate = "ON DUPLICATE KEY UPDATE\n";
 		foreach( $keys as $key )
 		{
-			$onDuplicateKeyUpdate .= "$key=VALUES($key),\n";
+			$onDuplicateKeyUpdate .= "`$key`=VALUES(`$key`),\n";
 		}
 
 		return substr( self::buildMultipleInsert( $array ).$onDuplicateKeyUpdate, 0, -2 ).' ';
