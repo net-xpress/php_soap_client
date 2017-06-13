@@ -11,6 +11,11 @@ class SoapCall_GetItemsBase extends PlentySoapCall
 
 	private $startAtPage = 0;
 
+	public function __construct()
+	{
+		parent::__construct( __CLASS__ );
+	}
+
 	public function execute()
 	{
 		list( $lastUpdate, $currentTime, $this->startAtPage ) = DBUtils::lastUpdateStart( __CLASS__ );
