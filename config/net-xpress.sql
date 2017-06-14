@@ -321,3 +321,22 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemStock` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsWarehouseSettings` (
+  /*`SKU`                 VARCHAR(45) NOT NULL, replaced with ItemID in combination with AttributeValueSetID */
+  `ItemID`              INT(11) NOT NULL,
+  `AttributeValueSetID` INT(11) NOT NULL,
+  `ID`                  INT(11)     DEFAULT NULL,
+  `MaximumStock`        INT(11)     DEFAULT NULL,
+  `ReorderLevel`        INT(11)     DEFAULT NULL,
+  `StockBuffer`         INT(11)     DEFAULT NULL,
+  `StockTurnover`       INT(11)     DEFAULT NULL,
+  `StorageLocation`     INT(11)     DEFAULT NULL,
+  `StorageLocationType` VARCHAR(45) DEFAULT NULL,
+  `WarehouseID`         INT(11)     DEFAULT NULL,
+  `Zone`                INT(11)     DEFAULT NULL,
+  PRIMARY KEY (`ItemID`, `AttributeValueSetID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
