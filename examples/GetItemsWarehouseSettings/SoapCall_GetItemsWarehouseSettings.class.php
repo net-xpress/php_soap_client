@@ -65,6 +65,23 @@ class SoapCall_GetItemsWarehouseSettings extends PlentySoapCall
 	 */
 	private function getSKUQuery()
 	{
+		return "SELECT CONCAT(
+           i.ItemID,
+           '-0-',
+           CASE WHEN (avs.AttributeValueSetID IS NULL)
+             THEN
+               '0'
+           ELSE
+             avs.AttributeValueSetID
+           END
+       ) AS SKU
+FROM
+  ItemsBase AS i
+  LEFT JOIN
+  AttributeValueSets AS avs
+    ON
+      i.ItemID = avs.ItemID
+ORDER BY i.ItemID";
 	}
 
 	/**
