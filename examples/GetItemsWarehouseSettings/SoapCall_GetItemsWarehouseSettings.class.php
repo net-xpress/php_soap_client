@@ -1,12 +1,14 @@
 <?php
 
 require_once ROOT.'lib/soap/call/PlentySoapCall.abstract.php';
+require_once ROOT.'lib/soap/tools/SKUHelper.php';
 require_once 'RequestContainer_GetItemsWarehouseSettings.class.php';
 
 class SoapCall_GetItemsWarehouseSettings extends PlentySoapCall
 {
 	const MAX_SKU_PER_PAGE = 100;
 
+	private $aItemsWarehouseSettings = [];
 	private $warehouseID             = 1;
 
 	public function __construct()
@@ -121,10 +123,36 @@ ORDER BY i.ItemID";
 	 */
 	private function processWarehouseSetting($warehouseSetting)
 	{
+		list( $ItemID, , $AttributeValueSetID ) = SKU2Values( $warehouseSetting->SKU );
+
+		$this->aItemsWarehouseSettings[] = array(
+			'ID'                  => $warehouseSetting->ID,
+			'MaximumStock'        => $warehouseSetting->MaximumStock,
+			'ReorderLevel'        => $warehouseSetting->ReorderLevel,
+			/*  'SKU'					=>	$oWarehouseSetting->SKU,	// replaced with ItemID in combination with AVSI */
+			'ItemID'              => $ItemID,
+			'AttributeValueSetID' => $AttributeValueSetID,
+			/*
+			 * 	End of SKU replacement
+			 */
+			'StockBuffer'         => $warehouseSetting->StockBuffer,
+			'StockTurnover'       => $warehouseSetting->StockTurnover,
+			'StorageLocation'     => $warehouseSetting->StorageLocation,
+			'StorageLocationType' => $warehouseSetting->StorageLocationType,
+			'WarehouseID'         => $warehouseSetting->WarehouseID,
+			'Zone'                => $warehouseSetting->Zone,
+		);
 	}
 
 	private function storeToDB()
 	{
+		$countItemsWarehouseSettings = count( $this->aItemsWarehouseSettings );
+
+		if( $countItemsWarehouseSettings > 0 )
+		{
+			$this->debug( __FUNCTION__." storing $countItemsWarehouseSettings records of ItemsWarehouseSettings" );
+			DBQuery::getInstance()->insert( "INSERT INTO `ItemsWarehouseSettings`".DBUtils::buildMultipleInsertOnDuplicateKeyUpdate( $this->aItemsWarehouseSettings ) );
+		}
 	}
 
 }
