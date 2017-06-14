@@ -340,3 +340,22 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsWarehouseSettings` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsSuppliers` (
+  `ItemID`                  INT(11) NOT NULL,
+  `SupplierID`              INT(11) NOT NULL,
+  `IsRebateAllowed`         VARCHAR(45) DEFAULT NULL,
+  `ItemSupplierPrice`       DOUBLE      DEFAULT NULL,
+  `ItemSupplierRowID`       INT(11)     DEFAULT NULL,
+  `LastUpdate`              INT(11)     DEFAULT NULL,
+  `Priority`                INT(11)     DEFAULT NULL,
+  `Rebate`                  DOUBLE      DEFAULT NULL,
+  `SupplierDeliveryTime`    INT(11)     DEFAULT NULL,
+  `SupplierItemNumber`      VARCHAR(45) DEFAULT NULL,
+  `SupplierMinimumPurchase` DOUBLE      DEFAULT NULL,
+  `VPE`                     DOUBLE      DEFAULT NULL,
+  PRIMARY KEY (`ItemID`, `SupplierID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
