@@ -26,6 +26,20 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`MetaLastUpdate` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`MetaConfig` (
+  `ConfigKey`   VARCHAR(45) NOT NULL,
+  `Domain`      VARCHAR(45) NOT NULL,
+  `ConfigValue` VARCHAR(45) NOT NULL,
+  `ConfigType`  VARCHAR(45)          DEFAULT NULL,
+  `LastUpdate`  INT(11)              DEFAULT NULL,
+  `Active`      TINYINT(1)  NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ConfigKey`, `Domain`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `db473835270`.`OrderHead` (
   `Currency`                VARCHAR(45)             DEFAULT NULL,
   `CustomerID`              INT(11)                 DEFAULT NULL,
