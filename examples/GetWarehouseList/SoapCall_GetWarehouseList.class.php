@@ -1,99 +1,75 @@
 <?php
-
 require_once ROOT.'lib/soap/call/PlentySoapCall.abstract.php';
 
-/**
- *
- * It might be a better idea to run this call via
- * PlentySoap.daemon.php
- * So you can keep you local db/system up2date in an easy way
- *
- */
-class SoapCall_GetWarehouseList extends PlentySoapCall 
+class SoapCall_GetWarehouseList extends PlentySoapCall
 {
+
+	private $aWarehouseData = [];
+
 	public function __construct()
 	{
-		parent::__construct(__CLASS__);
+		parent::__construct( __CLASS__ );
+		DBQuery::getInstance()->truncate( 'TRUNCATE TABLE `WarehouseList`' );
 	}
-	
+
 	public function execute()
 	{
+		$this->debug( __FUNCTION__.' Fetching warehouse data from plenty' );
+
 		try
 		{
-			$this->getLogger()->debug(__FUNCTION__.' start');
-	
-			/*
-			 * do soap call
-			*/
-			$response	=	$this->getPlentySoap()->GetWarehouseList(new PlentySoapRequest_GetWarehouseList);
-	
-			/*
-			 * check soap response
-			*/
+			$response = $this->getPlentySoap()->GetWarehouseList( new PlentySoapRequest_GetWarehouseList() );
+
 			if( $response->Success == true )
 			{
-				$this->getLogger()->debug(__FUNCTION__.' Request Success - : GetWarehouseList');
-				
-				/*
-				 * parse and save the data
-				 */
-				$this->parseResponse($response);
+				$this->responseInterpretation( $response );
+				$this->storeToDB();
 			}
 			else
 			{
-				$this->getLogger()->debug(__FUNCTION__.' Request Error');
+				$this->debug( __FUNCTION__.' Request Error' );
 			}
-		}
-		catch(Exception $e)
+		} catch( Exception $e )
 		{
-			$this->onExceptionAction($e);
+			$this->onExceptionAction( $e );
 		}
 	}
-	
-	/**
-	 * Parse the response
-	 *
-	 * @param PlentySoapResponse_GetWarehouseList $response
-	 */
-	private function parseResponse($response)
+
+	private function responseInterpretation(PlentySoapResponse_GetWarehouseList $response)
 	{
-		if(is_array($response->WarehouseList->item))
+		if( is_array( $response->WarehouseList->item ) )
 		{
-			/*
-			 * If more than one warehouse
-			*/
-			foreach ($response->WarehouseList->item as $warehouse)
+			foreach( $response->WarehouseList->item as $oPlentySoapObject_GetWarehouseList )
 			{
-				$this->saveInDatabase($warehouse);
+				$this->processWarehouse( $oPlentySoapObject_GetWarehouseList );
 			}
 		}
-		/*
-		 * only one warehouse
-		*/
-		elseif (is_object($response->WarehouseList->item))
+		else
 		{
-			$this->saveInDatabase($response->WarehouseList->item);
+			$this->processWarehouse( $response->WarehouseList->item );
 		}
 	}
-	
+
 	/**
-	 * Save the data in the database
-	 *
 	 * @param PlentySoapObject_GetWarehouseList $warehouse
 	 */
-	private function saveInDatabase($warehouse)
+	private function processWarehouse($warehouse)
 	{
-		$query = 'REPLACE INTO `plenty_warehouse` '.
-								DBUtils::buildInsert(	array(	'warehouse_id'		=>	$warehouse->WarehouseID,
-																'warehouse_type'	=>	$warehouse->Type,
-																'warehouse_name'	=>	$warehouse->Name
-														)
-								);
-	
-		$this->getLogger()->debug(__FUNCTION__.' '.$query);
+		$this->aWarehouseData[] = [
+			'WarehouseID' => $warehouse->WarehouseID,
+			'Name'        => $warehouse->Name,
+			'Type'        => $warehouse->Type,
+		];
+	}
 
-		DBQuery::getInstance()->replace($query);
+	private function storeToDB()
+	{
+		$countWarehouseData = count( $this->aWarehouseData );
+
+		if( $countWarehouseData > 0 )
+		{
+			$this->getLogger()->debug( __FUNCTION__." storing $countWarehouseData warehouse records to db" );
+			DBQuery::getInstance()->insert( 'INSERT INTO `WarehouseList`'.DBUtils::buildMultipleInsert( $this->aWarehouseData ) );
+		}
 	}
 }
-
-?>
