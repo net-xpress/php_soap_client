@@ -359,3 +359,13 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsSuppliers` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE `db473835270`.`WarehouseList` (
+  `WarehouseID` INT(11) NOT NULL,
+  `Name`        VARCHAR(45) DEFAULT NULL,
+  `Type`        INT(11)     DEFAULT NULL,
+  PRIMARY KEY (`WarehouseID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
