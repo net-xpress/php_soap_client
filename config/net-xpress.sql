@@ -369,3 +369,29 @@ CREATE TABLE `db473835270`.`WarehouseList` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`CurrentStocks` (
+  `ItemID`               INT(11) NOT NULL,
+  `PriceID`              INT(11) NOT NULL,
+  `AttributeValueSetID`  INT(11) NOT NULL,
+  `WarehouseID`          INT(11) NOT NULL,
+  `AveragePrice`         DECIMAL(10, 4) DEFAULT NULL,
+  `EAN`                  BIGINT(13)     DEFAULT NULL,
+  `EAN2`                 BIGINT(13)     DEFAULT NULL,
+  `EAN3`                 BIGINT(13)     DEFAULT NULL,
+  `EAN4`                 BIGINT(13)     DEFAULT NULL,
+  `NetStock`             DECIMAL(10, 4) DEFAULT NULL,
+  `PhysicalStock`        DECIMAL(10, 4) DEFAULT NULL,
+  `StorageLocationID`    INT(11)        DEFAULT NULL,
+  `StorageLocationName`  VARCHAR(45)    DEFAULT NULL,
+  `StorageLocationStock` VARCHAR(45)    DEFAULT NULL,
+  `VariantEAN`           BIGINT(13)     DEFAULT NULL,
+  `VariantEAN2`          BIGINT(13)     DEFAULT NULL,
+  `VariantEAN3`          BIGINT(13)     DEFAULT NULL,
+  `VariantEAN4`          BIGINT(13)     DEFAULT NULL,
+  `WarehouseType`        VARCHAR(45)    DEFAULT NULL,
+  PRIMARY KEY (`ItemID`, `PriceID`, `AttributeValueSetID`, `WarehouseID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
