@@ -93,7 +93,7 @@ class SoapCall_SearchOrders extends PlentySoapCall
 		}
 
 		$this->storeToDB();
-		DBUtils::lastUpdateFinish( $currentTime );
+		DBUtils::lastUpdateFinish( $currentTime, __CLASS__ );
 	}
 
 

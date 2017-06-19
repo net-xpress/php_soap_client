@@ -427,17 +427,17 @@ class DBUtils
 	/**
 	 * finish lastUpdate for given function
 	 *
+	 * @param int $currentTime
 	 * @param string $functionName
 	 */
-	public static function lastUpdateFinish($functionName)
+	public static function lastUpdateFinish($currentTime, $functionName)
 	{
 		if( !(self::$DBQuery instanceof DBQuery) )
 		{
 			self::$DBQuery = DBQuery::getInstance();
 		}
 
-		$currentTime = time();
-		self::$DBQuery->update("UPDATE `MetaLastUpdate` ".DBUtils::buildUpdate(array('LastUpdate' => $currentTime, 'CurrentLastUpdate' => $currentTime, 'CurrentPage' => 0))." WHERE `Function`='$functionName'");
+		self::$DBQuery->update( "UPDATE `MetaLastUpdate` ".DBUtils::buildUpdate( array('LastUpdate' => $currentTime, 'CurrentLastUpdate' => $currentTime, 'CurrentPage' => 0) )." WHERE `Function`='$functionName'" );
 	}
 
 }

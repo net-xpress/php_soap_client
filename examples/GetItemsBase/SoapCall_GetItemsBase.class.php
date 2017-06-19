@@ -90,7 +90,7 @@ class SoapCall_GetItemsBase extends PlentySoapCall
 		}
 
 		$this->storeToDB();
-		DBUtils::lastUpdateFinish( __CLASS__ );
+		DBUtils::lastUpdateFinish( $currentTime, __CLASS__ );
 
 	}
 
