@@ -409,3 +409,19 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`CurrentStocks` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`CalculatedDailyNeeds` (
+  `ItemID`              INT(11) NOT NULL,
+  `AttributeValueSetID` INT(11) NOT NULL,
+  `DailyNeed`           DECIMAL(8, 2) DEFAULT NULL,
+  `LastUpdate`          INT(11)       DEFAULT NULL,
+  `SkippedA`            INT(11)       DEFAULT NULL,
+  `QuantitiesA`         TEXT          DEFAULT NULL,
+  `SkippedB`            INT(11)       DEFAULT NULL,
+  `QuantitiesB`         TEXT          DEFAULT NULL,
+  `New`                 TINYINT(1)    DEFAULT 0,
+  PRIMARY KEY (`ItemID`, `AttributeValueSetID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
