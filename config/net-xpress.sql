@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemCategories` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`AttributeValueSets` (
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemAttributeValueSets` (
   `ItemID`                INT(11)     NOT NULL,
   `AttributeValueSetID`   INT(11)     NOT NULL,
   `AttributeValueSetName` VARCHAR(45) NOT NULL,

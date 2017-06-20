@@ -80,7 +80,7 @@ class SoapCall_GetItemsWarehouseSettings extends PlentySoapCall
 FROM
   ItemsBase AS i
   LEFT JOIN
-  AttributeValueSets AS avs
+  ItemAttributeValueSets AS avs
     ON
       i.ItemID = avs.ItemID
 ORDER BY i.ItemID";

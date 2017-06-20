@@ -245,8 +245,8 @@ class SoapCall_GetItemsBase extends PlentySoapCall
 		{
 			$this->getLogger()->info( __FUNCTION__." : storing $countAttributeValueSets attribute value set records ..." );
 
-			DBQuery::getInstance()->delete( "DELETE FROM `AttributeValueSets` WHERE `ItemID` IN ('".implode( "','", array_keys( $this->processedItemsBases ) )."')" );
-			DBQuery::getInstance()->insert( "INSERT INTO `AttributeValueSets`".DBUtils::buildMultipleInsertOnDuplicateKeyUpdate( $this->processedAttributeValueSets ) );
+			DBQuery::getInstance()->delete( "DELETE FROM ItemAttributeValueSets WHERE `ItemID` IN ('".implode( "','", array_keys( $this->processedItemsBases ) )."')" );
+			DBQuery::getInstance()->insert( "INSERT INTO `ItemAttributeValueSets`".DBUtils::buildMultipleInsertOnDuplicateKeyUpdate( $this->processedAttributeValueSets ) );
 		}
 
 		if( $countCategoriesRecords > 0 )
