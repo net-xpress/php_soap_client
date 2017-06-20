@@ -3,6 +3,7 @@ require_once realpath( dirname( __FILE__ ).'/../' ).'/config/basic.inc.php';
 require_once ROOT.'lib/soap/example_loader/PlentymarketsSoapExampleLoader.class.php';
 require_once ROOT.'scripts/calculation/CalculateDailyNeed.class.php';
 require_once ROOT.'scripts/calculation/CalculateWriteBackSuggestions.class.php';
+require_once ROOT.'scripts/calculation/CalculateWriteBackPermissions.class.php';
 
 // via plenty soap,
 // update:	OrderHead, OrderItem
@@ -44,3 +45,7 @@ PlentymarketsSoapExampleLoader::getInstance()->run( ['', 'GetCurrentStocks',] );
 // rely:	ItemsBase, ItemFreeTextFields, ItemsSuppliers, CalculatedDailyNeed, ItemsWarehouseSettings, ItemAttributeValueSets, ItemAvailability, plenty_soap_token
 (new CalculateWriteBackSuggestions())->execute();
 
+// locally, calculate write back permissions
+// update:	WriteBackPermissions
+// rely:	ItemsBase, ItemAttributeValueSets, ItemsSuppliers, ItemsWarehouseSettings, ItemAvailability
+(new CalculateWriteBackPermissions())->execute();
