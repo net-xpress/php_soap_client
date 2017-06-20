@@ -17,7 +17,7 @@ PlentymarketsSoapExampleLoader::getInstance()->run( ['', 'GetItemsBase',] );
 
 // locally, calculate daily need,
 // update:	CalculatedDailyNeed
-// rely:	OrderHead, ItemsBase, ItemFreeTextFields, ItemAvailability
+// rely:	OrderHead, ItemsBase, ItemFreeTextFields, ItemAvailability, MetaConfig
 (new CalculateDailyNeed())->execute();
 
 // via plenty soap,
