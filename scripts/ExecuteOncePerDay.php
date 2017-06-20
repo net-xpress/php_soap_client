@@ -5,6 +5,10 @@ require_once ROOT.'scripts/calculation/CalculateDailyNeed.class.php';
 require_once ROOT.'scripts/calculation/CalculateWriteBackSuggestions.class.php';
 require_once ROOT.'scripts/calculation/CalculateWriteBackPermissions.class.php';
 
+/**
+ * This script performs the 'daily job': Update all necessary tables and calculate data to be displayed in the 'stock-tool'
+ */
+
 // via plenty soap,
 // update:	OrderHead, OrderItem
 // rely:	MetaLastUpdate, plenty_soap_token
