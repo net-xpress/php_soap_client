@@ -425,3 +425,18 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`CalculatedDailyNeeds` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`WriteBackSuggestions` (
+  `ItemID`                       INT(11) NOT NULL,
+  `AttributeValueSetID`          INT(11) NOT NULL,
+  `ReorderLevel`                 INT(11)     DEFAULT 0,
+  `SupplierMinimumPurchase`      INT(11)     DEFAULT 0,
+  `MaximumStock`                 INT(11)     DEFAULT 0,
+  `Valid`                        TINYINT(1)  DEFAULT 0,
+  `ReorderLevelError`            VARCHAR(45) DEFAULT NULL,
+  `SupplierMinimumPurchaseError` VARCHAR(45) DEFAULT NULL,
+  PRIMARY KEY (`ItemID`, `AttributeValueSetID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
