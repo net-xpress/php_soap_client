@@ -440,3 +440,14 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`WriteBackSuggestions` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`WriteBackPermissions` (
+  `ItemID`              INT(11) NOT NULL,
+  `AttributeValueSetID` INT(11) NOT NULL,
+  `WritePermission`     TINYINT(1) DEFAULT 0,
+  `Error`               TINYINT(1) DEFAULT 0,
+  PRIMARY KEY (`ItemID`, `AttributeValueSetID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
