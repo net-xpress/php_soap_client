@@ -38,3 +38,8 @@ PlentymarketsSoapExampleLoader::getInstance()->run( ['', 'GetWarehouseList',] );
 // rely:	WarehouseList, MetaLastUpdate, plenty_soap_token
 PlentymarketsSoapExampleLoader::getInstance()->run( ['', 'GetCurrentStocks',] );
 
+// locally, calculate write back suggestions
+// update:	WriteBackSuggestion
+// rely:	ItemsBase, ItemFreeTextFields, ItemsSuppliers, CalculatedDailyNeed, ItemsWarehouseSettings, ItemAttributeValueSets, ItemAvailability, plenty_soap_token
+(new CalculateWriteBackSuggestions())->execute();
+
