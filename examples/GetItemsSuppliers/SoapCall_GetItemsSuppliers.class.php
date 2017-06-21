@@ -21,7 +21,7 @@ class SoapCall_GetItemsSuppliers extends PlentySoapCall
 
 	public function execute()
 	{
-		$this->debug( __FUNCTION__." fetching items suppliers from plenty" );
+		$this->getLogger()->info( __FUNCTION__." fetching items suppliers from plenty" );
 
 		try
 		{
@@ -71,7 +71,7 @@ class SoapCall_GetItemsSuppliers extends PlentySoapCall
 			{
 				/** @noinspection PhpParamsInspection */
 				$countRecords = count( $response->ItemsSuppliersList->item );
-				$this->getLogger()->info( __FUNCTION__." fetched $countRecords supplier records from ItemID: {$response->ItemsSuppliersList->item[0]->ItemID} to {$response->ItemsSuppliersList->item[$countRecords - 1]->ItemID}" );
+				$this->debug( __FUNCTION__." fetched $countRecords supplier records from ItemID: {$response->ItemsSuppliersList->item[0]->ItemID} to {$response->ItemsSuppliersList->item[$countRecords - 1]->ItemID}" );
 
 				foreach( $response->ItemsSuppliersList->item AS &$suppliersList )
 				{
@@ -82,7 +82,7 @@ class SoapCall_GetItemsSuppliers extends PlentySoapCall
 			{
 				if( !is_null( $response->ItemsSuppliersList->item ) )
 				{
-					$this->getLogger()->info( __FUNCTION__." fetched supplier record for ItemID: {$response->ItemsSuppliersList->item->ItemID}" );
+					$this->debug( __FUNCTION__." fetched supplier record for ItemID: {$response->ItemsSuppliersList->item->ItemID}" );
 
 					$this->processSuppliersList( $response->ItemsSuppliersList->item );
 				}
@@ -184,12 +184,12 @@ class SoapCall_GetItemsSuppliers extends PlentySoapCall
 		{
 			DBQuery::getInstance()->insert( "INSERT INTO `ItemsSuppliers`".DBUtils::buildMultipleInsertOnDuplicateKeyUpdate( $this->aSuppliers ) );
 
-			$this->debug( __FUNCTION__." storing $countSuppliers records of supplier data" );
+			$this->getLogger()->info( __FUNCTION__." storing $countSuppliers records of supplier data" );
 		}
 
 		if( $countNoData > 0 )
 		{
-			$this->debug( __FUNCTION__." no data found for items: ".implode( ', ', $this->noDataArticles ) );
+			$this->getLogger()->info( __FUNCTION__." no data found for items: ".implode( ', ', $this->noDataArticles ) );
 		}
 	}
 }

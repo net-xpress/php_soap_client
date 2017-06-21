@@ -14,7 +14,7 @@ class SoapCall_GetWarehouseList extends PlentySoapCall
 
 	public function execute()
 	{
-		$this->debug( __FUNCTION__.' Fetching warehouse data from plenty' );
+		$this->getLogger()->info( __FUNCTION__.' Fetching warehouse data from plenty' );
 
 		try
 		{
@@ -68,7 +68,7 @@ class SoapCall_GetWarehouseList extends PlentySoapCall
 
 		if( $countWarehouseData > 0 )
 		{
-			$this->getLogger()->debug( __FUNCTION__." storing $countWarehouseData warehouse records to db" );
+			$this->getLogger()->info( __FUNCTION__." storing $countWarehouseData warehouse records to db" );
 			DBQuery::getInstance()->insert( 'INSERT INTO `WarehouseList`'.DBUtils::buildMultipleInsert( $this->aWarehouseData ) );
 		}
 	}

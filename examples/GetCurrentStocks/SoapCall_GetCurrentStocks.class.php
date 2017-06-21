@@ -45,7 +45,7 @@ class SoapCall_GetCurrentStocks extends PlentySoapCall
 
 				if( $this->startAtPage > 0 )
 				{
-					$this->debug( __FUNCTION__." Starting at page ".$this->startAtPage );
+					$this->getLogger()->info( __FUNCTION__." Starting at page ".$this->startAtPage );
 				}
 
 				/*
@@ -61,7 +61,7 @@ class SoapCall_GetCurrentStocks extends PlentySoapCall
 					$stocksFound = count( $response->CurrentStocks->item );
 					$pagesFound  = $response->Pages;
 
-					$this->debug( __FUNCTION__.' Request Success - stock records found : '.$stocksFound.' / pages : '.$pagesFound.', page : '.($this->page + 1) );
+					$this->getLogger()->info( __FUNCTION__.' Request Success - stock records found : '.$stocksFound.' / pages : '.$pagesFound.', page : '.($this->page + 1) );
 
 					// process response
 					$this->responseInterpretation( $response );

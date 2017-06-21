@@ -30,7 +30,7 @@ class SoapCall_SearchOrders extends PlentySoapCall
 
 	public function execute()
 	{
-		$this->getLogger()->debug( __FUNCTION__.' Fetching order data from plenty' );
+		$this->getLogger()->info( __FUNCTION__.' Fetching order data from plenty' );
 
 		list( $lastUpdate, $currentTime, $this->startAtPage ) = DBUtils::lastUpdateStart( __CLASS__ );
 
@@ -42,7 +42,7 @@ class SoapCall_SearchOrders extends PlentySoapCall
 
 				if( $this->startAtPage > 0 )
 				{
-					$this->getLogger()->debug( __FUNCTION__." Starting at page {$this->startAtPage}" );
+					$this->getLogger()->info( __FUNCTION__." Starting at page {$this->startAtPage}" );
 				}
 				/*
 				 * do soap call
@@ -55,7 +55,7 @@ class SoapCall_SearchOrders extends PlentySoapCall
 					$ordersFound = is_array( $response->Orders->item ) ? count( $response->Orders->item ) : 1;
 					$pagesFound  = $response->Pages;
 
-					$this->getLogger()->debug( __FUNCTION__." Request Success - orders found : $ordersFound / pages : $pagesFound " );
+					$this->getLogger()->info( __FUNCTION__." Request Success - orders found : $ordersFound / pages : $pagesFound " );
 
 					// auswerten
 					$this->responseInterpretation( $response );
@@ -110,7 +110,7 @@ class SoapCall_SearchOrders extends PlentySoapCall
 				{
 					/** @noinspection PhpParamsInspection */
 					$ordersFound = is_array( $response->Orders->item ) ? count( $response->Orders->item ) : 1;
-					$this->getLogger()->debug( __FUNCTION__." Request Success - articles found : $ordersFound / page : {$this->page}" );
+					$this->debug( __FUNCTION__." Request Success - articles found : $ordersFound / page : {$this->page}" );
 
 					// auswerten
 					$this->responseInterpretation( $response );
@@ -269,7 +269,7 @@ class SoapCall_SearchOrders extends PlentySoapCall
 		{
 			$dbQuery = DBQuery::getInstance();
 
-			$this->debug( __FUNCTION__." : storing $countOrderHeads order head and $countOrderItems order item records. Progress: {$this->page} / {$this->pages}" );
+			$this->getLogger()->info( __FUNCTION__." : storing $countOrderHeads order head and $countOrderItems order item records. Progress: {$this->page} / {$this->pages}" );
 
 			$dbQuery->insert( "INSERT INTO `OrderHead`".DBUtils::buildMultipleInsertOnDuplicateKeyUpdate( $this->aOrderHeads ) );
 

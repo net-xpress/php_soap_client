@@ -37,7 +37,7 @@ class SoapCall_GetItemsBase extends PlentySoapCall
 
 				if( $this->startAtPage > 0 )
 				{
-					$this->debug( __FUNCTION__." Starting at page {$this->startAtPage}" );
+					$this->getLogger()->info( __FUNCTION__." Starting at page {$this->startAtPage}" );
 				}
 
 				/*
@@ -53,7 +53,7 @@ class SoapCall_GetItemsBase extends PlentySoapCall
 					$articlesFound = is_array( $response->ItemsBase->item ) ? count( $response->ItemsBase->item ) : 1;
 					$pagesFound    = $response->Pages;
 
-					$this->debug( __FUNCTION__." Request Success - articles found : $articlesFound / pages : $pagesFound" );
+					$this->getLogger()->info( __FUNCTION__." Request Success - articles found : $articlesFound / pages : $pagesFound" );
 
 					// process response
 					$this->responseInterpretation( $response );

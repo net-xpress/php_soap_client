@@ -18,7 +18,7 @@ class SoapCall_GetItemsWarehouseSettings extends PlentySoapCall
 
 	public function execute()
 	{
-		$this->getLogger()->debug( __FUNCTION__.' Fetching items warehouse settings from plenty' );
+		$this->getLogger()->info( __FUNCTION__.' Fetching items warehouse settings from plenty' );
 
 		try
 		{
@@ -49,7 +49,7 @@ class SoapCall_GetItemsWarehouseSettings extends PlentySoapCall
 				{
 
 					// ... otherwise log error and try next request
-					$this->getLogger()->debug( __FUNCTION__." Request Error" );
+					$this->debug( __FUNCTION__." Request Error" );
 				}
 			}
 
@@ -96,7 +96,7 @@ ORDER BY i.ItemID";
 
 			/** @noinspection PhpParamsInspection */
 			$countRecords = count( $response->ItemList->item );
-			$this->getLogger()->info( __FUNCTION__." fetched $countRecords warehouse setting records from SKU: {$response->ItemList->item[0]->SKU} to {$response->ItemList->item[$countRecords - 1]->SKU}" );
+			$this->debug( __FUNCTION__." fetched $countRecords warehouse setting records from SKU: {$response->ItemList->item[0]->SKU} to {$response->ItemList->item[$countRecords - 1]->SKU}" );
 
 			foreach( $response->ItemList->item as &$warehouseSetting )
 			{
@@ -107,13 +107,13 @@ ORDER BY i.ItemID";
 		{
 			if( isset( $response->ItemList ) )
 			{
-				$this->getLogger()->info( __FUNCTION__." fetched warehouse setting records for SKU: {$response->ItemList->item->SKU}" );
+				$this->debug( __FUNCTION__." fetched warehouse setting records for SKU: {$response->ItemList->item->SKU}" );
 
 				$this->processWarehouseSetting( $response->ItemList->item );
 			}
 			else
 			{
-				$this->getLogger()->info( __FUNCTION__." fetched no warehouse setting records for current request" );
+				$this->debug( __FUNCTION__." fetched no warehouse setting records for current request" );
 			}
 		}
 	}
@@ -150,7 +150,7 @@ ORDER BY i.ItemID";
 
 		if( $countItemsWarehouseSettings > 0 )
 		{
-			$this->debug( __FUNCTION__." storing $countItemsWarehouseSettings records of ItemsWarehouseSettings" );
+			$this->getLogger()->info( __FUNCTION__." storing $countItemsWarehouseSettings records of ItemsWarehouseSettings" );
 			DBQuery::getInstance()->insert( "INSERT INTO `ItemsWarehouseSettings`".DBUtils::buildMultipleInsertOnDuplicateKeyUpdate( $this->aItemsWarehouseSettings ) );
 		}
 	}
