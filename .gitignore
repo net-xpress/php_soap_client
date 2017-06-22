@@ -2,6 +2,10 @@
 .settings
 .project
 .DS_Store
+phpunit-5.7.20.phar
+/.idea
 /log
 /lib/soap/controller
 /lib/soap/model
+/test
+
