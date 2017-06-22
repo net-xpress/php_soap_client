@@ -451,3 +451,38 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`WriteBackPermissions` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`JansenStockData` (
+  `EAN`            BIGINT(13) NOT NULL,
+  `ExternalItemID` VARCHAR(45)    DEFAULT NULL,
+  `PhysicalStock`  DECIMAL(10, 4) DEFAULT NULL,
+  PRIMARY KEY (`EAN`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`JansenTransactionHead` (
+  `TransactionID` INT(11) NOT NULL AUTO_INCREMENT,
+  `Timestamp`     INT(11)          DEFAULT NULL,
+  PRIMARY KEY (`TransactionID`),
+  UNIQUE KEY (`Timestamp`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`JansenTransactionItem` (
+  `TransactionID`  INT(11)    NOT NULL,
+  `EAN`            BIGINT(13) NOT NULL,
+  `ExternalItemID` VARCHAR(45)    DEFAULT NULL,
+  `Difference`     DECIMAL(10, 4) DEFAULT NULL,
+  FOREIGN KEY (`TransactionID`) REFERENCES JansenTransactionHead (`TransactionID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
