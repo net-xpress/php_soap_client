@@ -53,7 +53,7 @@ PlentymarketsSoapExampleLoader::getInstance()->run( ['', 'GetCurrentStocks',] );
 // update:	WriteBackPermissions
 // rely:	ItemsBase, ItemAttributeValueSets, ItemsSuppliers, ItemsWarehouseSettings, ItemAvailability
 (new CalculateWriteBackPermissions())->execute();
-*/
+
 // via plenty soap:
 // update:	ItemsPriceSets
 // rely:	ItemsBase, ItemAttributeValueSets, plenty_soap_token
