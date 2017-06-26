@@ -486,3 +486,56 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`JansenTransactionItem` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsPriceSets` (
+  `ItemID`                       INT(11) NOT NULL,
+  `PriceID`                      INT(11) NOT NULL,
+  `Price`                        DECIMAL(10, 4) DEFAULT NULL,
+  `Price1`                       DECIMAL(10, 4) DEFAULT NULL,
+  `Price2`                       DECIMAL(10, 4) DEFAULT NULL,
+  `Price3`                       DECIMAL(10, 4) DEFAULT NULL,
+  `Price4`                       DECIMAL(10, 4) DEFAULT NULL,
+  `Price5`                       DECIMAL(10, 4) DEFAULT NULL,
+  `Price6`                       DECIMAL(10, 4) DEFAULT NULL,
+  `Price7`                       DECIMAL(10, 4) DEFAULT NULL,
+  `Price8`                       DECIMAL(10, 4) DEFAULT NULL,
+  `Price9`                       DECIMAL(10, 4) DEFAULT NULL,
+  `Price10`                      DECIMAL(10, 4) DEFAULT NULL,
+  `Price11`                      DECIMAL(10, 4) DEFAULT NULL,
+  `Price12`                      DECIMAL(10, 4) DEFAULT NULL,
+  `RebateLevelPrice6`            INT(11)        DEFAULT NULL,
+  `RebateLevelPrice7`            INT(11)        DEFAULT NULL,
+  `RebateLevelPrice8`            INT(11)        DEFAULT NULL,
+  `RebateLevelPrice9`            INT(11)        DEFAULT NULL,
+  `RebateLevelPrice10`           INT(11)        DEFAULT NULL,
+  `RebateLevelPrice11`           INT(11)        DEFAULT NULL,
+  `PurchasePriceNet`             DECIMAL(10, 4) DEFAULT NULL,
+  `RRP`                          DECIMAL(8, 2)  DEFAULT NULL,
+  `BestOfferAutoAcceptancePrice` DECIMAL(8, 2)  DEFAULT NULL,
+  `CarryingCosts`                DECIMAL(8, 2)  DEFAULT NULL,
+  `HeightInMM`                   INT(11)        DEFAULT NULL,
+  `InventoryCost`                DECIMAL(8, 2)  DEFAULT NULL,
+  `ItemShipping3`                DECIMAL(8, 2)  DEFAULT NULL,
+  `ItemShipping4`                DECIMAL(8, 2)  DEFAULT NULL,
+  `LengthInMM`                   INT(11)        DEFAULT NULL,
+  `Lot`                          DECIMAL(8, 2)  DEFAULT NULL,
+  `OperatingCostsPercental`      DECIMAL(8, 2)  DEFAULT NULL,
+  `Package`                      INT(11)        DEFAULT NULL,
+  `PackagingUnit`                VARCHAR(45)    DEFAULT NULL,
+  `Position`                     INT(11)        DEFAULT NULL,
+  `ScoMinimumPrice`              DECIMAL(8, 2)  DEFAULT NULL,
+  `ShowOnly`                     INT(11)        DEFAULT NULL,
+  `TollPercental`                DECIMAL(8, 2)  DEFAULT NULL,
+  `TypeOfPackage`                INT(11)        DEFAULT NULL,
+  `Unit`                         VARCHAR(45)    DEFAULT NULL,
+  `Unit1`                        VARCHAR(45)    DEFAULT NULL,
+  `Unit2`                        VARCHAR(45)    DEFAULT NULL,
+  `UnitLoadDevice`               INT(11)        DEFAULT NULL,
+  `VAT`                          DECIMAL(8, 2)  DEFAULT NULL,
+  `WeightInGramm`                INT(11)        DEFAULT NULL,
+  `WidthInMM`                    INT(11)        DEFAULT NULL,
+  PRIMARY KEY (`ItemID`, `PriceID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
