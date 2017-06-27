@@ -1,4 +1,4 @@
-INSERT INTO `db473835270`.`MetaConfig` (`ConfigKey`, `Domain`, `ConfigValue`, `ConfigType`, `LastUpdate`, `Active`)
+INSERT INTO `db688084571`.`MetaConfig` (`ConfigKey`, `Domain`, `ConfigValue`, `ConfigType`, `LastUpdate`, `Active`)
 VALUES
   ('MinimumOrdersA', 'stock', '8', 'int', 1391510512, 1),
   ('MinimumOrdersB', 'stock', '3', 'int', 0, 1),
