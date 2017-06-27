@@ -19,3 +19,8 @@ require_once ROOT.'scripts/import/MatchJansenToNx.class.php';
 // update:	SetCurrentStocks, JansenStockUnmatched
 // rely:	JansenTransactionHead, JansenTransactionItem, JansenStockData, ItemsBase, ItemAttributeValueSets, PriceSets, ItemAvailability
 (new MatchJansenToNx())->execute();
+
+// via plenty soap:
+// update:	SetCurrentStocks, CurrentStocksTiming, stock data at plenty markets
+// rely:	SetCurrentStocks, plenty_soap_token
+PlentymarketsSoapExampleLoader::getInstance()->run( ['', 'SetCurrentStocks',] );
