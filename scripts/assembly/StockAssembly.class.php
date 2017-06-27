@@ -58,6 +58,8 @@ class StockAssembly
 
 	const STOCK_DATA_FROM_BASIC = "
 FROM ItemsBase
+LEFT JOIN ItemTexts
+	ON ItemsBase.ItemID = ItemTexts.ItemID
 LEFT JOIN ItemAvailability
 	ON ItemsBase.ItemID = ItemAvailability.ItemID
 LEFT JOIN ItemAttributeValueSets
@@ -71,8 +73,6 @@ LEFT JOIN ItemsWarehouseSettings
     END = ItemsWarehouseSettings.AttributeValueSetID";
 
 	const STOCK_DATA_FROM_ADVANCED = "
-LEFT JOIN ItemTexts
-	ON ItemsBase.ItemID = ItemTexts.ItemID
 LEFT JOIN ItemFreeTextFields
 	ON ItemsBase.ItemID = ItemFreeTextFields.ItemID
 LEFT JOIN CalculatedDailyNeeds
