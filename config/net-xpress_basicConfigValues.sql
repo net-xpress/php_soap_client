@@ -18,3 +18,9 @@ ON DUPLICATE KEY UPDATE
   `LastUpdate`  = VALUES(`LastUpdate`),
   `Active`      = VALUES(`Active`);
 
+INSERT INTO db688084571.MetaLastUpdate (Function, LastUpdate, CurrentLastUpdate, CurrentPage)
+VALUES ('SoapCall_SearchOrders', 1483232400, NULL, NULL)
+ON DUPLICATE KEY UPDATE
+  `LastUpdate`        = VALUES(`LastUpdate`),
+  `CurrentLastUpdate` = NULL,
+  `CurrentPage`       = NULL;
