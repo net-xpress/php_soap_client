@@ -1,5 +1,6 @@
 <?php
 require_once ROOT.'lib/soap/call/PlentySoapCall.abstract.php';
+require_once ROOT.'lib/soap/tools/SKUHelper.php';
 require_once 'RequestContainer_SetCurrentStocks.class.php';
 
 class SoapCall_SetCurrentStocks extends PlentySoapCall

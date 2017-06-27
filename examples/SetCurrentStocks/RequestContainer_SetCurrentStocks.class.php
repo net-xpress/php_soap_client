@@ -3,6 +3,22 @@ require_once ROOT.'lib/soap/container/RequestContainer.abstract.php';
 
 class RequestContainer_SetCurrentStocks extends RequestContainer
 {
+	public function add($item, $index = null)
+	{
+		parent::add( array_merge(
+			['SKU'             => null,
+			 'EAN'             => null,
+			 'EAN2'            => null,
+			 'EAN3'            => null,
+			 'EAN4'            => null,
+			 'PhysicalStock'   => null,
+			 'Reason'          => null,
+			 'StorageLocation' => null,
+			 'WarehouseID'     => null,]
+			, $item
+		), $index );
+	}
+
 	/**
 	 * returns the assembled request
 	 *
