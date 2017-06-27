@@ -118,7 +118,6 @@ class ImportJansenStock
 				$this->getLogger()->info( __FUNCTION__." storing $differenceCount difference records from jansen" );
 
 				DBQuery::getInstance()->insert( "INSERT INTO JansenTransactionHead".DBUtils::buildInsert( [
-						// TODO continue here!
 						'TransactionID' => null,
 						'Timestamp'     => $this->currentTime,
 					] ) );
