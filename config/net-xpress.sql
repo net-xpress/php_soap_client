@@ -1,9 +1,9 @@
-CREATE DATABASE IF NOT EXISTS `db473835270` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE IF NOT EXISTS `db688084571` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 /**
  * used by StoreToken.class.php
  */
-CREATE TABLE IF NOT EXISTS `db473835270`.`plenty_soap_token` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`plenty_soap_token` (
   `soap_token_user`     VARCHAR(64) NOT NULL,
   `soap_token_inserted` DATETIME    DEFAULT NULL,
   `soap_token`          VARCHAR(32) DEFAULT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`plenty_soap_token` (
   DEFAULT CHARACTER SET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`MetaLastUpdate` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`MetaLastUpdate` (
   `Function`          VARCHAR(45) NOT NULL,
   `LastUpdate`        INT(11) DEFAULT NULL,
   `CurrentLastUpdate` INT(11) DEFAULT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`MetaLastUpdate` (
   COLLATE = utf8_unicode_ci;
 
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`MetaConfig` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`MetaConfig` (
   `ConfigKey`   VARCHAR(45) NOT NULL,
   `Domain`      VARCHAR(45) NOT NULL,
   `ConfigValue` VARCHAR(45) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`MetaConfig` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`OrderHead` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`OrderHead` (
   `Currency`                VARCHAR(45)             DEFAULT NULL,
   `CustomerID`              INT(11)                 DEFAULT NULL,
   `DeliveryAddressID`       INT(11)                 DEFAULT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`OrderHead` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`OrderItem` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`OrderItem` (
   `id`                   INT(11) NOT NULL        AUTO_INCREMENT,
   `BundleItemID`         INT(11)                 DEFAULT NULL,
   `Currency`             VARCHAR(45)             DEFAULT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`OrderItem` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsBase` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemsBase` (
   `ItemID`              INT(11) NOT NULL,
   `ItemNo`              VARCHAR(45) DEFAULT NULL,
   `ExternalItemID`      VARCHAR(45) DEFAULT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsBase` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemCategories` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemCategories` (
   `ItemID`                 INT(11) NOT NULL,
   `ItemCategoryID`         INT(11) DEFAULT NULL,
   `ItemCategoryLevel`      INT(11) DEFAULT NULL,
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemCategories` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemAttributeValueSets` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemAttributeValueSets` (
   `ItemID`                INT(11)     NOT NULL,
   `AttributeValueSetID`   INT(11)     NOT NULL,
   `AttributeValueSetName` VARCHAR(45) NOT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemAttributeValueSets` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemTexts` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemTexts` (
   `ItemID`                  INT(11) NOT NULL,
   `Lang`                    VARCHAR(45) DEFAULT 'de',
   `Name`                    TEXT        DEFAULT NULL,
@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemTexts` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemFreeTextFields` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemFreeTextFields` (
   `ItemID` INT(11) NOT NULL,
   `Free1`  TEXT DEFAULT NULL,
   `Free2`  TEXT DEFAULT NULL,
@@ -229,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemFreeTextFields` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemAvailability` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemAvailability` (
   `ItemID`                                INT(11) NOT NULL,
   `Allyouneeed`                           INT(11)     DEFAULT NULL,
   `AmazonFBA`                             INT(11)     DEFAULT NULL,
@@ -291,7 +291,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemAvailability` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemOthers` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemOthers` (
   `ItemID`              INT(11) NOT NULL,
   `AuctionTitleLinkage` VARCHAR(45)   DEFAULT NULL,
   `Coupon`              INT(11)       DEFAULT NULL,
@@ -319,7 +319,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemOthers` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemStock` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemStock` (
   `ItemID`                              INT(11) NOT NULL,
   `ChangeAvailablePositiveStock`        TINYINT(1) DEFAULT NULL,
   `ChangeAvailablePositiveStockVariant` TINYINT(1) DEFAULT NULL,
@@ -336,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemStock` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsWarehouseSettings` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemsWarehouseSettings` (
   /*`SKU`                 VARCHAR(45) NOT NULL, replaced with ItemID in combination with AttributeValueSetID */
   `ItemID`              INT(11) NOT NULL,
   `AttributeValueSetID` INT(11) NOT NULL,
@@ -355,7 +355,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsWarehouseSettings` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsSuppliers` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemsSuppliers` (
   `ItemID`                  INT(11) NOT NULL,
   `SupplierID`              INT(11) NOT NULL,
   `IsRebateAllowed`         VARCHAR(45) DEFAULT NULL,
@@ -374,7 +374,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsSuppliers` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`WarehouseList` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`WarehouseList` (
   `WarehouseID` INT(11) NOT NULL,
   `Name`        VARCHAR(45) DEFAULT NULL,
   `Type`        INT(11)     DEFAULT NULL,
@@ -384,7 +384,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`WarehouseList` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`CurrentStocks` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`CurrentStocks` (
   `ItemID`               INT(11) NOT NULL,
   `PriceID`              INT(11) NOT NULL,
   `AttributeValueSetID`  INT(11) NOT NULL,
@@ -410,7 +410,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`CurrentStocks` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`CalculatedDailyNeeds` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`CalculatedDailyNeeds` (
   `ItemID`              INT(11) NOT NULL,
   `AttributeValueSetID` INT(11) NOT NULL,
   `DailyNeed`           DECIMAL(8, 2) DEFAULT NULL,
@@ -426,7 +426,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`CalculatedDailyNeeds` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`WriteBackSuggestions` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`WriteBackSuggestions` (
   `ItemID`                       INT(11) NOT NULL,
   `AttributeValueSetID`          INT(11) NOT NULL,
   `ReorderLevel`                 INT(11)     DEFAULT 0,
@@ -441,7 +441,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`WriteBackSuggestions` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`WriteBackPermissions` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`WriteBackPermissions` (
   `ItemID`              INT(11) NOT NULL,
   `AttributeValueSetID` INT(11) NOT NULL,
   `WritePermission`     TINYINT(1) DEFAULT 0,
@@ -452,7 +452,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`WriteBackPermissions` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`JansenStockData` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`JansenStockData` (
   `EAN`            BIGINT(13) NOT NULL,
   `ExternalItemID` VARCHAR(45)    DEFAULT NULL,
   `PhysicalStock`  DECIMAL(10, 4) DEFAULT NULL,
@@ -463,7 +463,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`JansenStockData` (
   COLLATE = utf8_unicode_ci;
 
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`JansenTransactionHead` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`JansenTransactionHead` (
   `TransactionID` INT(11) NOT NULL AUTO_INCREMENT,
   `Timestamp`     INT(11)          DEFAULT NULL,
   PRIMARY KEY (`TransactionID`),
@@ -474,7 +474,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`JansenTransactionHead` (
   COLLATE = utf8_unicode_ci;
 
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`JansenTransactionItem` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`JansenTransactionItem` (
   `TransactionID`  INT(11)    NOT NULL,
   `EAN`            BIGINT(13) NOT NULL,
   `ExternalItemID` VARCHAR(45)    DEFAULT NULL,
@@ -487,7 +487,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`JansenTransactionItem` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`JansenStockUnmatched` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`JansenStockUnmatched` (
   `ItemID`              INT(11) NOT NULL,
   `AttributeValueSetID` INT(11) DEFAULT NULL,
   PRIMARY KEY (`ItemID`, `AttributeValueSetID`)
@@ -496,7 +496,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`JansenStockUnmatched` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsPriceSets` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`ItemsPriceSets` (
   `ItemID`                       INT(11) NOT NULL,
   `PriceID`                      INT(11) NOT NULL,
   `Price`                        DECIMAL(10, 4) DEFAULT NULL,
@@ -549,7 +549,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsPriceSets` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`SetCurrentStocks` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`SetCurrentStocks` (
   `ItemID`              INT(11) NOT NULL,
   `AttributeValueSetID` INT(11) NOT NULL,
   `PriceID`             INT(11) NOT NULL,
@@ -563,7 +563,7 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`SetCurrentStocks` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `db473835270`.`CurrentStocksTiming` (
+CREATE TABLE IF NOT EXISTS `db688084571`.`CurrentStocksTiming` (
   `ItemID`              INT(11) NOT NULL,
   `AttributeValueSetID` INT(11) NOT NULL,
   `WarehouseID`         INT(11) NOT NULL,
