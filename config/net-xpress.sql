@@ -539,3 +539,28 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsPriceSets` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`SetCurrentStocks` (
+  `ItemID`              INT(11) NOT NULL,
+  `AttributeValueSetID` INT(11) NOT NULL,
+  `PriceID`             INT(11) NOT NULL,
+  `WarehouseID`         INT(11) NOT NULL,
+  `StorageLocation`     INT(11) NOT NULL,
+  `PhysicalStock`       INT(11) NOT NULL,
+  `Reason`              INT(11) NOT NULL,
+  PRIMARY KEY (`ItemID`, `AttributeValueSetID`, `PriceID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `db473835270`.`CurrentStocksTiming` (
+  `ItemID`              INT(11) NOT NULL,
+  `AttributeValueSetID` INT(11) NOT NULL,
+  `WarehouseID`         INT(11) NOT NULL,
+  `Timestamp`           INT(11) NOT NULL,
+  PRIMARY KEY (`ItemID`, `AttributeValueSetID`, `WarehouseID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
