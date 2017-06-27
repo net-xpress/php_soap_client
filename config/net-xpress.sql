@@ -487,6 +487,15 @@ CREATE TABLE IF NOT EXISTS `db473835270`.`JansenTransactionItem` (
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `db473835270`.`JansenStockUnmatched` (
+  `ItemID`              INT(11) NOT NULL,
+  `AttributeValueSetID` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`ItemID`, `AttributeValueSetID`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `db473835270`.`ItemsPriceSets` (
   `ItemID`                       INT(11) NOT NULL,
   `PriceID`                      INT(11) NOT NULL,
